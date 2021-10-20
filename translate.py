@@ -93,5 +93,5 @@ while retries < 5:
     time.sleep(1)
     pass
 
-if retries==10:
+if retries==5:
   print('Could not connect to Tower upstream services')

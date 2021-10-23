@@ -23,14 +23,14 @@ def translate(message):
   env = response.headers['x-machine']
   retries = 0
 
-  # give the job 10 seconds to complete
-  while retries < 10:
+  # give the job 8 seconds to complete
+  while retries < 8:
     job = f'http://automation.kong-sales-engineering.com/api/v2/jobs/{jobId}/'
     response = towerSession.get(job, verify=False)
     jobDone = response.json()['status'] == 'successful'
     elapsed = response.json()['elapsed']
     retries += 1
-    time.sleep(1)
+    time.sleep(0.5)
 
   job = f'http://automation.kong-sales-engineering.com/api/v2/jobs/{jobId}/stdout/?format=txt'
   response = towerSession.get(job, verify=False)
@@ -74,8 +74,8 @@ towerSession.headers.update({'content-type': 'application/json'})
 quote = None
 retries = 0
 
-# give it 5 seconds to failover
-while retries < 5:
+# give it 3 seconds to failover
+while retries < 3:
   if quote == None:
     response = quoteSession.get('https://zenquotes.io/api/random/')
     jsonResponse = json.JSONDecoder().decode(response.text)[0]
@@ -90,8 +90,8 @@ while retries < 5:
     quote = None
     retries = 0
   except Exception:
-    time.sleep(1)
+    time.sleep(0.5)
     pass
 
-if retries==5:
+if retries==3:
   print('Could not connect to Tower upstream services')
